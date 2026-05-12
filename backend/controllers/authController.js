@@ -72,5 +72,12 @@ const loginUser = async (req, res)=>{
  }
 };
 
-module.exports = { loginUser, registerUser };
+const getProfile = async (req, res)=>{
+  res.status(200).json({
+    message: "Profile fetched successfully",
+    user: req.user
+  });
+};
+
+module.exports = { loginUser, registerUser, getProfile };
 
