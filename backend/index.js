@@ -1,11 +1,17 @@
-const http = require("http");
 
-const myServer = http.createServer((req, res)=>{
-  console.log("New request recieved");
-  res.end("Hello from Server!");
-});
+globalThis.crypto = require('crypto');
 
-myServer.listen(5002, ()=>{
+const dotenv = require("dotenv");
+dotenv.config();
+
+const app = require('./app');
+
+const connectDB = require('./config/db');
+connectDB();
+
+const PORT = process.env.PORT || 5002;
+
+app.listen(PORT, ()=>{
   console.log("SERVER STARTED");
 });
 
