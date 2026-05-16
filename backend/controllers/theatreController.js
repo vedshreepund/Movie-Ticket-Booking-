@@ -78,7 +78,8 @@ const createTheatre = async (req, res)=>{
         });
       }
       return res.status(200).json({
-        message: "Theatre deleted successfully"
+        message: "Theatre deleted successfully",
+        theatre
       });
     }
     catch(error){

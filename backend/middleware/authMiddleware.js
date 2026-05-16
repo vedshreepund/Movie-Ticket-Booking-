@@ -35,4 +35,13 @@ const adminAccess = ( req, res, next )=>{
   next();
 };
 
-module.exports = {protect, adminAccess};
+const theatreAccess = (req, res, next )=>{
+  if( req.user.role != "theatreAdmin" ){
+    return res.status(403).json({
+      message: "Theatre Management Access Only"
+    });
+  }
+  next();
+}
+
+module.exports = {protect, adminAccess, theatreAccess};
