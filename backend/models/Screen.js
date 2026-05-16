@@ -12,7 +12,11 @@ const screenSchema = new mongoose.Schema(
             ref: "Theatre",
             required: true
         },
-        totalSeats:{
+        totalSeatsPerRow:{
+            type: Number,
+            required: true
+        },
+        totalRows:{
             type: Number,
             required: true
         }

@@ -26,7 +26,22 @@ const showSchema = new mongoose.Schema(
         endTime:{
             type: Date,
             required: true
+        },
+        totalRows:{
+            type:Number,
+            required:true
+        },
+
+        seatsPerRow:{
+            type:Number,
+            required:true
+        },
+
+        seats:{
+            type:[[Boolean]],
+            required:true
         }
+        
     },
     { timestamps: true }
 );

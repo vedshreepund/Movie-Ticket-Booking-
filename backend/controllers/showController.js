@@ -2,7 +2,19 @@ const Show = require("../models/Show");
 
 const createShow = async (req, res )=>{
     try{
-        const show = await Show.create(req.body);
+        const {
+            movieId,
+            theatreId,
+            screenId,
+            startTime,
+            endTime,
+            totalRows,
+            seatsPerRow
+        } = req.body;
+
+        const seats = Array.from({length: totalRows}, ()=>  Array(seatsPerRow).fill(false) );
+
+        const show = await Show.create({movieId, theatreId, screenId, startTime, endTime, totalRows,seatsPerRow, seats});
         return res.status(200).json({
             message: "Show registerd successfully",
             show
@@ -41,7 +53,7 @@ const getShowById = async (req, res)=>{
 
 const updateShow = async (req, res)=>{
     try{
-        const show = await Show.findByIdAndUpdate(req.params.id);
+        const show = await Show.findByIdAndUpdate(req.params.id, req.body, {new: true});
         if(!show){
             return res.status(404).json({
                 message: "Show not found"
@@ -49,7 +61,8 @@ const updateShow = async (req, res)=>{
 
         }
         return res.status(200).json({
-            message: "Show updated successfully"
+            message: "Show updated successfully",
+            show
         });
     }
     catch(error){
