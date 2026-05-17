@@ -1,4 +1,45 @@
 const Movie = require("../models/Movie");
+const Fuse = require("fuse.js");
+
+const searchMovie = async (req, res)=>{
+  try{
+    const search = req.query.q||"";
+
+    if(!search.trim()){
+      return res.status(200).json([]);
+    };
+
+    let movies = await Movie.find({
+      title: {
+        $regex: search,
+        $options: "i"
+      }
+    }).limit(10);
+
+    if( movies.length == 0 ){
+
+      const allMovies = await Movie.find();
+
+      const fuse = new Fuse(allMovies, {
+        keys: ["title"],
+        threshold: 0.4,
+        minMatchCharLength: 2
+      });
+
+      const fuzzyResult = fuse.search(search);
+      movies = fuzzyResult.map( result => result.item).slice(0, 10);
+
+    }
+
+    return res.status(200).json(movies);
+
+  }
+  catch(error){
+    return res.status(500).json({
+      message: error.message
+    });
+  }
+}
 
 const createMovie = async (req, res)=>{
   try{
@@ -88,7 +129,7 @@ const createMovie = async (req, res)=>{
     }
   };
 
-  module.exports = {createMovie, getAllMovies, getMovieById, updateMovie, deleteMovie  };
+  module.exports = {searchMovie, createMovie, getAllMovies, getMovieById, updateMovie, deleteMovie  };
   
 
   
